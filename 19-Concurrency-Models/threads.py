@@ -1,4 +1,3 @@
-
 """
 threads.py: shows that Python threads are slower
 than sequential code for CPU-intensive work.
@@ -18,26 +17,30 @@ class PrimeResult(NamedTuple):
     prime: bool
     elapsed: float
 
-JobQueue = SimpleQueue[int]  # <4>
-ResultQueue = SimpleQueue[PrimeResult]  # <5>
+JobQueue = SimpleQueue[int] 
+ResultQueue = SimpleQueue[PrimeResult]  
 
-def check(n: int) -> PrimeResult:  # <6>
+
+def check(n: int) -> PrimeResult: 
     t0 = perf_counter()
     res = is_prime(n)
     return PrimeResult(n, res, perf_counter() - t0)
 
-def worker(jobs: JobQueue, results: ResultQueue) -> None:  # <7>
-    while n := jobs.get():  # <8>
-        results.put(check(n))  # <9>
+
+def worker(jobs: JobQueue, results: ResultQueue) -> None: 
+    while n := jobs.get(): 
+        results.put(check(n)) 
     results.put(PrimeResult(0, False, 0.0))
 
+
 def start_jobs(workers: int, jobs: JobQueue, results: ResultQueue) -> None:
-    for n in NUMBERS:  # <3>
+    for n in NUMBERS:  
         jobs.put(n)
     for _ in range(workers):
-        proc = Thread(target=worker, args=(jobs, results))  # <4>
-        proc.start()  # <5>
-        jobs.put(0)  # <6>
+        proc = Thread(target=worker, args=(jobs, results)) 
+        proc.start() 
+        jobs.put(0)  
+
 
 def report(workers: int, results: ResultQueue) -> int:
     checked = 0
@@ -51,6 +54,7 @@ def report(workers: int, results: ResultQueue) -> int:
             label = 'P' if prime else ' '
             print(f'{n:16}  {label} {elapsed:9.6f}s')
     return checked
+
 
 def main() -> None:
     if len(sys.argv) < 2:
@@ -66,6 +70,7 @@ def main() -> None:
     checked = report(workers, results)
     elapsed = perf_counter() - t0
     print(f'{checked} checks in {elapsed:.2f}s')
+
 
 if __name__ == '__main__':
     main()

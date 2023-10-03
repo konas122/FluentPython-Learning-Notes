@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import math
 
 PRIME_FIXTURE = [
@@ -27,7 +25,7 @@ PRIME_FIXTURE = [
 
 NUMBERS = [n for n, _ in PRIME_FIXTURE]
 
-# tag::IS_PRIME[]
+
 def is_prime(n: int) -> bool:
     if n < 2:
         return False
@@ -41,7 +39,7 @@ def is_prime(n: int) -> bool:
         if n % i == 0:
             return False
     return True
-# end::IS_PRIME[]
+
 
 if __name__ == '__main__':
 
